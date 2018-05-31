@@ -1,0 +1,115 @@
+<html>
+<head>
+    <style>
+.migtukas {
+    -moz-box-shadow: 0px 10px 14px -7px #408c99;
+    -webkit-box-shadow: 0px 10px 14px -7px #408c99;
+    box-shadow: 0px 10px 14px -7px #408c99;
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #2ad8f7));
+    background:-moz-linear-gradient(top, #599bb3 5%, #2ad8f7 100%);
+    background:-webkit-linear-gradient(top, #599bb3 5%, #2ad8f7 100%);
+    background:-o-linear-gradient(top, #599bb3 5%, #2ad8f7 100%);
+    background:-ms-linear-gradient(top, #599bb3 5%, #2ad8f7 100%);
+    background:linear-gradient(to bottom, #599bb3 5%, #2ad8f7 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#2ad8f7',GradientType=0);
+    background-color:#599bb3;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+    border-radius:8px;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:20px;
+    padding:13px 32px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #2ad8f7;
+}
+.migtukasC:hover {
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #2ad8f7), color-stop(1, #599bb3));
+    background:-moz-linear-gradient(top, #2ad8f7 5%, #599bb3 100%);
+    background:-webkit-linear-gradient(top, #2ad8f7 5%, #599bb3 100%);
+    background:-o-linear-gradient(top, #2ad8f7 5%, #599bb3 100%);
+    background:-ms-linear-gradient(top, #2ad8f7 5%, #599bb3 100%);
+    background:linear-gradient(to bottom, #2ad8f7 5%, #599bb3 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#2ad8f7', endColorstr='#599bb3',GradientType=0);
+    background-color:#2ad8f7;
+}
+.migtukasC:active {
+    position:relative;
+    top:1px;
+}
+</style>
+</head>
+<body>
+<canvas id="myCanvas" width="500" height="500" style="border:4px solid #2ad8f7;"></canvas>
+<a id="migtukasC" href="#" class="migtukas">Create Button</a>
+<a id="migtukasF" href="#" class="migtukas">Fill Button</a>
+<script>
+
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
+    let duomenis = [];
+
+    let baltas = ctx.getImageData(0, 0, 500, 500).data.includes(0);
+
+    function fill(){
+        setInterval(function interval(){
+        while (baltas = true){
+            create();
+        }
+    }, 1);
+    }
+
+
+    function create() {
+        let coordx = Math.floor(Math.random() * canvas.width);
+        let coordy = Math.floor(Math.random() * canvas.width);
+        let width = Math.floor(Math.random() * 499 + 1);
+        let height = Math.floor(Math.random() * 499 + 1);
+
+        ctx.fillStyle = '#' + Math.round(0xffffff * Math.random()).toString(16);
+
+        let rect = {
+            x:  coordx,
+            y:  coordy,
+            w:  width,
+            h:  height
+        };
+
+        let ok = true;
+        duomenis.forEach(function (item) {
+                if (isCollide(rect, item)) {
+                    ok = false;
+                }
+            }
+        );
+
+        if (ok) {
+            ctx.fillRect(coordx, coordy, width, height);
+            duomenis.push(rect);
+        }
+        else {
+            create();
+        }
+    }
+
+
+
+    function isCollide(a, b) {
+        return !(
+            ((b.y) >= (a.y + a.h)) ||
+            (a.y >= (b.y + b.h)) ||
+            (b.x >= (a.x + a.w)) ||
+            (a.x >= (b.x + b.w))
+
+        );
+    }
+
+
+    document.getElementById('migtukasC').addEventListener('click', create);
+    document.getElementById('migtukasF').addEventListener('click', fill);
+
+</script>
+</body>
+</html>
